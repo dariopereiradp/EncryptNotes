@@ -24,13 +24,13 @@ import dp.cryptd.fragments.DiaryFragment;
 /**
  * Work that sends a notification reminding the note
  */
-public class DiaryNoteReminderWorker extends Worker {
+public class NoteReminderWorker extends Worker {
 
     public static final String CHANNEL_ID = "diary_reminder";
     public static final int NOTIFICATION_ID = 888;
     private final Context context;
 
-    public DiaryNoteReminderWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
+    public NoteReminderWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
         this.context = context;
     }
@@ -70,7 +70,7 @@ public class DiaryNoteReminderWorker extends Worker {
             String text = note.getNum_enc() == 0 ? note.getNoteText() : String.valueOf(note.getNum_enc()).concat(context.getString(R.string.x_encrypted));
 
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
-                    .setSmallIcon(R.drawable.ic_prayer)
+                    .setSmallIcon(R.drawable.ic_notification)
                     .setColor(ContextCompat.getColor(context, R.color.colorPrimary))
                     .setContentTitle(subject)
                     .setContentText(text)

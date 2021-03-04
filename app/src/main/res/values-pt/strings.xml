@@ -20,7 +20,7 @@
     <string name="ok">Ok</string>
     <string name="password">Senha</string>
     <string name="prayer_requests">Motivos de Oração</string>
-    <string name="diary">Diário</string>
+    <string name="diary">Notas</string>
     <string name="createOn">"Criado em: "</string>
     <string name="by">"Por: "</string>
     <string name="deleteSuccess"> Nota(s) apagadas com sucesso!</string>
@@ -61,11 +61,10 @@
     <string name="title">Title</string>
     <string name="edit_note">Editar nota</string>
     <string name="x_encrypted">x ENCRYPTADO</string>
-    <string name="timePattern">HH:mm</string>
     <string name="notification_off">Notificação desligada para esse dia</string>
     <string name="dateTimePatternSimple">d/M/yyyy \'às\' HH:mm</string>
     <string name="reminder_set">"Lembrete para: "</string>
-    <string name="diary_channel_name">Lembretes do Diário</string>
+    <string name="diary_channel_name">Lembretes das notas</string>
     <string name="diary_channel_description">Lembretes que podem ser configurados nas notas do Diário</string>
     <string name="last_modified">"Última modificação: "</string>
     <string name="restore">Restauro</string>

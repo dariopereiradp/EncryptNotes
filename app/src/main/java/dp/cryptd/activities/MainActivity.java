@@ -39,7 +39,7 @@ import dp.cryptd.db.notes.NotesDB;
 import dp.cryptd.fragments.AboutFragment;
 import dp.cryptd.fragments.DiaryFragment;
 import dp.cryptd.fragments.SettingsFragment;
-import dp.cryptd.notifications.DiaryNoteReminderWorker;
+import dp.cryptd.notifications.NoteReminderWorker;
 import dp.cryptd.utils.ImageUtils;
 import dp.cryptd.utils.NavDrawerMenuStack;
 
@@ -122,7 +122,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         if (savedInstanceState == null) {
             navigationView.getMenu().getItem(0).setChecked(true);
             menuIndexesClicked.push(0);
-            toolbar.setTitle(R.string.prayer_requests);
+            toolbar.setTitle(R.string.app_name);
             getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_id, new DiaryFragment())
                     .commit();
         }
@@ -231,7 +231,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 int index = menuIndexesClicked.peek();
                 switch (index) {
                     case 0:
-                        toolbar.setTitle(R.string.diary);
+                        toolbar.setTitle(R.string.app_name);
                         break;
                     case 1:
                         toolbar.setTitle(R.string.settings);
@@ -278,7 +278,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_id, new DiaryFragment(), DiaryFragment.DIARY_FRAGMENT).addToBackStack(null)
                         .commit();
                 menuIndexesClicked.push(0);
-                toolbar.setTitle(R.string.diary);
+                toolbar.setTitle(R.string.app_name);
             }
             closeDrawer();
         } else if (itemId == R.id.nav_settings_id) {
@@ -356,7 +356,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         for (Note note : NotesDB.getInstance(this).notesDao().getNotes()) {
             if (note.hasNotification()) {
                 Data data = new Data.Builder().putInt("id", note.getId()).build();
-                OneTimeWorkRequest notificationRequest = new OneTimeWorkRequest.Builder(DiaryNoteReminderWorker.class)
+                OneTimeWorkRequest notificationRequest = new OneTimeWorkRequest.Builder(NoteReminderWorker.class)
                         .setInitialDelay(note.getNoteDateTimeReminder() - System.currentTimeMillis(), TimeUnit.MILLISECONDS)
                         .setInputData(data).build();
                 WorkManager.getInstance(this).enqueueUniqueWork(String.valueOf(note.getId()), ExistingWorkPolicy.REPLACE, notificationRequest);
@@ -375,7 +375,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
         CharSequence diary_name = getString(R.string.diary_channel_name);
         String diary_description = getString(R.string.diary_channel_description);
-        NotificationChannel diary_channel = new NotificationChannel(DiaryNoteReminderWorker.CHANNEL_ID, diary_name, importance);
+        NotificationChannel diary_channel = new NotificationChannel(NoteReminderWorker.CHANNEL_ID, diary_name, importance);
         diary_channel.setDescription(diary_description);
 
         NotificationManager notificationManager = getSystemService(NotificationManager.class);

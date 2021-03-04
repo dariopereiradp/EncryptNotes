@@ -28,7 +28,7 @@ import dp.cryptd.db.notes.Note;
 import dp.cryptd.db.notes.NotesDB;
 import dp.cryptd.db.notes.NotesDao;
 import dp.cryptd.db.utils.DateConverter;
-import dp.cryptd.notifications.DiaryNoteNotification;
+import dp.cryptd.notifications.NoteNotification;
 
 /**
  * Class to view notes on RecyclerView
@@ -96,7 +96,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteHolder> 
                     WorkManager.getInstance(context).cancelUniqueWork(String.valueOf(note.getId()));
                     onNotificationStatusChange(holder, note);
                 } else {
-                    DatePickerDialog dpd = DatePickerDialog.newInstance(new DiaryNoteNotification(context, note, holder, NotesAdapter.this));
+                    DatePickerDialog dpd = DatePickerDialog.newInstance(new NoteNotification(context, note, holder, NotesAdapter.this));
                     dpd.setMinDate(Calendar.getInstance());
                     dpd.show(MainActivity.getInstance().getSupportFragmentManager(), "DatePickerNote");
                 }

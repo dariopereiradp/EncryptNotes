@@ -14,11 +14,11 @@
     <color name="grey">#E9EAEE</color>
     <color name="goodgrey">#535353</color>
 
-    <color name="gradient_1">#193BC1</color>
-    <color name="gradient_2">#E8F50A</color>
+    <color name="gradient_1">#00B326</color>
+    <color name="gradient_2">#004F6C</color>
 
     <color name="note_backg">#7EBABABA</color>
     <color name="red">#F91700</color>
 
-    <color name="ic_launcher_background">#334864</color>
+    <color name="ic_launcher_background">#009639</color>
 </resources>

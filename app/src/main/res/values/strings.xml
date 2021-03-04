@@ -16,7 +16,7 @@
     <string name="empty_note">Empty note not saved!</string>
     <string name="password">Password</string>
     <string name="prayer_requests">Prayer Requests</string>
-    <string name="diary">Journal</string>
+    <string name="diary">Notes</string>
     <string name="createOn">"Created on: "</string>
     <string name="by">"By: "</string>
     <string name="deleteSuccess">" Note(s) deleted successfully!"</string>
@@ -64,11 +64,10 @@
     <string name="edit_note">Edit note</string>
     <string name="x_encrypted">x ENCRYPTED</string>
     <string name="dp_soft_copyright" translatable="false">© DPSoft 2021</string>
-    <string name="timePattern">h:mm a</string>
     <string name="notification_off">Notification turned off for this day</string>
     <string name="dateTimePatternSimple">M/d/yyyy \'at\' h:mm a</string>
     <string name="reminder_set">"Reminder set to: "</string>
-    <string name="diary_channel_name">Diary Reminders</string>
+    <string name="diary_channel_name">Note Reminders</string>
     <string name="diary_channel_description">Reminders that you can set to your notes in Diary tab</string>
     <string name="last_modified">"Last modified: "</string>
     <string name="restore">Restore</string>

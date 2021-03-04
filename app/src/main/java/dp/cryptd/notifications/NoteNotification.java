@@ -29,7 +29,7 @@ import dp.cryptd.db.notes.NotesDB;
  * This class calls TimePickerDialog when date is set. When time is set, it will enqueueUniqueWork
  * (with note.getId() as name) to set a reminder for the selected date.
  */
-public class DiaryNoteNotification implements com.wdullaer.materialdatetimepicker.time.TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener {
+public class NoteNotification implements com.wdullaer.materialdatetimepicker.time.TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener {
 
     private final Context context;
     private final Note note;
@@ -37,7 +37,7 @@ public class DiaryNoteNotification implements com.wdullaer.materialdatetimepicke
     private final NotesAdapter adapter;
     private LocalDateTime calendar;
 
-    public DiaryNoteNotification(Context context, Note note, NotesAdapter.NoteHolder holder, NotesAdapter adapter) {
+    public NoteNotification(Context context, Note note, NotesAdapter.NoteHolder holder, NotesAdapter adapter) {
         this.context = context;
         this.note = note;
         this.holder = holder;
@@ -91,7 +91,7 @@ public class DiaryNoteNotification implements com.wdullaer.materialdatetimepicke
         adapter.onNotificationStatusChange(holder, note);
 
         Data data = new Data.Builder().putInt("id", note.getId()).build();
-        OneTimeWorkRequest notificationRequest = new OneTimeWorkRequest.Builder(DiaryNoteReminderWorker.class)
+        OneTimeWorkRequest notificationRequest = new OneTimeWorkRequest.Builder(NoteReminderWorker.class)
                 .setInitialDelay(number - System.currentTimeMillis(), TimeUnit.MILLISECONDS)
                 .setInputData(data).build();
         WorkManager.getInstance(context).enqueueUniqueWork(String.valueOf(note.getId()), ExistingWorkPolicy.REPLACE, notificationRequest);
