@@ -18,7 +18,6 @@ First final version. This app uses a different package name and different signat
 - Using default navigation drawer instead of external library
 - Many other improvements
 
-
 ### New
 - Customize note color background
 - Search feature
@@ -27,7 +26,7 @@ First final version. This app uses a different package name and different signat
 - User profile improved
 - Settings fragment
 - Change name, import picture from Google account
-- Authentication page with fingerprint (ou similar) authentication
+- Authentication page with fingerprint (or similar) credentials.
 
 
 ## [v1.4.1] - 12/09/2020
