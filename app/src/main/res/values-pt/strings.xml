@@ -6,7 +6,7 @@
     <string name="delete">Apagar</string>
     <string name="no_notes">Sem Notas!</string>
     <string name="save">Salvar</string>
-    <string name="about_version">Versão: 1.0  – 04/03/2021</string>
+    <string name="about_version">Versão: 2.0  – 05/03/2021</string>
     <string name="encriptar">Encriptar</string>
     <string name="desencriptar">Desencriptar</string>
     <string name="msgEnc">"Indique a senha que vai ficar associada a essa encriptação: "</string>
@@ -19,8 +19,7 @@
     <string name="notaSalva">Nota salva</string>
     <string name="ok">Ok</string>
     <string name="password">Senha</string>
-    <string name="prayer_requests">Motivos de Oração</string>
-    <string name="diary">Notas</string>
+    <string name="notes">Notas</string>
     <string name="createOn">"Criado em: "</string>
     <string name="by">"Por: "</string>
     <string name="deleteSuccess"> Nota(s) apagadas com sucesso!</string>
@@ -65,7 +64,7 @@
     <string name="dateTimePatternSimple">d/M/yyyy \'às\' HH:mm</string>
     <string name="reminder_set">"Lembrete para: "</string>
     <string name="diary_channel_name">Lembretes das notas</string>
-    <string name="diary_channel_description">Lembretes que podem ser configurados nas notas do Diário</string>
+    <string name="diary_channel_description">Lembretes que podem ser configurados nas suas notas</string>
     <string name="last_modified">"Última modificação: "</string>
     <string name="restore">Restauro</string>
     <string name="restore_description">Confirme que tem uma conexão à internet. Vai ser feita uma busca no Google Drive pela cópia de segurança mais atual. Os seus dados e configurações atuais serão apagados para sempre!</string>

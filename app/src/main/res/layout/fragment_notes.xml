@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.DiaryFragment">
+    tools:context=".fragments.NotesFragment">
 
-    <include layout="@layout/content_diary" />
+    <include layout="@layout/content_notes" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"

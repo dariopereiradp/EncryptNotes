@@ -10,7 +10,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/top_profile_height"
-        android:background="@color/goodgrey" />
+        android:background="@color/goodGrey" />
 
     <ScrollView
         android:layout_width="match_parent"

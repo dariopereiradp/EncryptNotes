@@ -7,7 +7,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 /**
- * Created by ixi.Dv on 20/06/2018.
+ * Class to access NotesDB and notesDao
  */
 @Database(entities = Note.class, version = 1, exportSchema = false)
 public abstract class NotesDB extends RoomDatabase {

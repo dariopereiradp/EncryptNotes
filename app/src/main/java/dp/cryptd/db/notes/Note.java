@@ -8,7 +8,7 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import dp.cryptd.R;
-import dp.cryptd.db.utils.DateConverter;
+import dp.cryptd.utils.DateConverter;
 
 /**
  * Class that represents a note

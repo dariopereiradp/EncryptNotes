@@ -13,20 +13,17 @@ import java.util.Locale;
 
 /**
  * Activity that stores some important constants. However, the main functionality is to change the language and the app theme.
- * All other acitivities must extend BaseActivity.
+ * All other activities must extend BaseActivity.
  * It overrides attachBaseContext(Context newBase) method to ensure the same language and theme in all activities from the app.
  */
 public class BaseActivity extends AppCompatActivity {
 
     public static final String LANGUAGE = "language";
-    public static final String NOTIFICATION = "notifications";
-    public static final String TIME = "timePreference";
     public static final String THEME = "theme";
     public static final String PROFILE_IMAGE = "image";
     public static final String PROFILE_NAME = "name";
     public static final String PROFILE_MAIL = "email";
     public static final String PROFILE_ID = "personId";
-    public static final String NOTIFICATION_TYPE = "notification_type";
     public static final String LOAD_ALARMS = "loadAlarms";
     public static final String LAST_BACKUP_TIME = "lastBackupTime";
 

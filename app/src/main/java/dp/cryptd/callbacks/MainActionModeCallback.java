@@ -7,7 +7,7 @@ import android.view.MenuItem;
 import dp.cryptd.R;
 
 /**
- * Class to represent ActionMode when long click notes on DiaryFragment (menu on toolbar changes)
+ * Class to represent ActionMode when long click notes on NotesFragment (menu on toolbar changes)
  */
 public abstract class MainActionModeCallback implements ActionMode.Callback {
     private ActionMode action;

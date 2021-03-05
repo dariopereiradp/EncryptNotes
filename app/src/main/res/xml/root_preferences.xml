@@ -35,6 +35,5 @@
             app:title="@string/theme"
             app:useSimpleSummaryProvider="true" />
 
-
     </PreferenceCategory>
 </PreferenceScreen>

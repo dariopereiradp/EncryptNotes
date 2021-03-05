@@ -16,7 +16,6 @@ import androidx.core.content.ContextCompat;
 import java.util.concurrent.Executor;
 
 import dp.cryptd.R;
-import dp.cryptd.fragments.DiaryFragment;
 
 /**
  * Activity that handles fingerprint (or similar) authentication. If it's not available on the device,
@@ -96,16 +95,14 @@ public class LoginActivity extends BaseActivity {
     /**
      * Opens activity (or fragment) according to extra fields of intent.
      * This is useful when opening the app through notification click.
-     * 1. If it's a prayer reminder notification, it will open PrayerDay activity
-     * 2. If it's a note reminder notification, it will open EditNote activity.
-     * 3. If it's a birthday or special days reminder, it will open Main Activity in AboutHerFragment.
-     * 4. If it's a normal app opening, it will open Main Activity in PrayerFragment (that is, the
+     * 1. If it's a note reminder notification, it will open EditNote activity.
+     * 2. If it's a normal app opening, it will open Main Activity in PrayerFragment (that is, the
      * initial fragment)
      * <p>
-     * The method uses Pending Intent with backIntent to create a back stack, so when the user clicks
+     * This method uses Pending Intent with backIntent to create a back stack, so when the user clicks
      * the back button, it will have consistent behaviour. For example, if user clicks in a note
      * reminder notification, it will open EditNoteActivity. If the user then clicks on back button,
-     * it will open MainActivity in DiaryFragment instead of closing the app. If he presses back again,
+     * it will open MainActivity in NotesFragment instead of closing the app. If he presses back again,
      * however, the app will close.
      */
     private void openActivity() {
@@ -114,11 +111,10 @@ public class LoginActivity extends BaseActivity {
             Intent backIntent = new Intent(getBaseContext(), MainActivity.class);
             backIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             PendingIntent mainPendingIntent;
-           if (intent.hasExtra(EditNoteActivity.NOTE_EXTRA_Key)) {
-                int id = intent.getExtras().getInt(EditNoteActivity.NOTE_EXTRA_Key);
+            if (intent.hasExtra(EditNoteActivity.NOTE_EXTRA_KEY)) {
+                int id = intent.getExtras().getInt(EditNoteActivity.NOTE_EXTRA_KEY);
                 Intent noteIntent = new Intent(getBaseContext(), EditNoteActivity.class);
-                noteIntent.putExtra(EditNoteActivity.NOTE_EXTRA_Key, id);
-                backIntent.putExtra(MainActivity.FRAGMENT_TO_LOAD, DiaryFragment.DIARY_FRAGMENT);
+                noteIntent.putExtra(EditNoteActivity.NOTE_EXTRA_KEY, id);
                 mainPendingIntent = PendingIntent.getActivities(getBaseContext(), id, new Intent[]{backIntent, noteIntent}, PendingIntent.FLAG_ONE_SHOT);
                 mainPendingIntent.send();
             } else {

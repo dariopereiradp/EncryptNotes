@@ -15,7 +15,6 @@ import android.widget.TextView;
 import androidx.cardview.widget.CardView;
 
 import dp.cryptd.R;
-import dp.cryptd.notifications.NoteReminderWorker;
 
 /**
  * SlashScreen activity. It also receives extras when it's opened by a notification. Then it will
@@ -50,13 +49,10 @@ public class SplashActivity extends BaseActivity {
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
             Intent intent = getIntent();
             Intent login = new Intent(SplashActivity.this, LoginActivity.class);
-            if (intent.hasExtra(BaseActivity.NOTIFICATION_TYPE)) {
-                String type = intent.getExtras().getString(BaseActivity.NOTIFICATION_TYPE);
-                if (type == NoteReminderWorker.CHANNEL_ID) {
-                    int id = intent.getExtras().getInt(EditNoteActivity.NOTE_EXTRA_Key);
-                    login = new Intent(SplashActivity.this, LoginActivity.class);
-                    login.putExtra(EditNoteActivity.NOTE_EXTRA_Key, id);
-                }
+            if (intent.hasExtra(EditNoteActivity.NOTE_EXTRA_KEY)) {
+                int id = intent.getExtras().getInt(EditNoteActivity.NOTE_EXTRA_KEY);
+                login = new Intent(SplashActivity.this, LoginActivity.class);
+                login.putExtra(EditNoteActivity.NOTE_EXTRA_KEY, id);
             }
             startActivity(login);
             finish();

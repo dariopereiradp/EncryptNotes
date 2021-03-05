@@ -36,7 +36,7 @@ public class EditNoteActivity extends BaseActivity {
     private Note temp;
     private MaterialToolbar bottomToolbar;
     private int color;
-    public static final String NOTE_EXTRA_Key = "note_id";
+    public static final String NOTE_EXTRA_KEY = "note_id";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -51,7 +51,7 @@ public class EditNoteActivity extends BaseActivity {
         inputNote = findViewById(R.id.input_note);
         dao = NotesDB.getInstance(this).notesDao();
         if (getIntent().getExtras() != null) {
-            int id = getIntent().getExtras().getInt(NOTE_EXTRA_Key, 0);
+            int id = getIntent().getExtras().getInt(NOTE_EXTRA_KEY, 0);
             temp = dao.getNoteById(id);
             changeColor(temp.getColor());
             title.setText(temp.getNoteTitle());
@@ -61,7 +61,7 @@ public class EditNoteActivity extends BaseActivity {
             }
         } else inputNote.setFocusable(true);
 
-        color = temp == null ? getColor(R.color.note_backg) : temp.getColor();
+        color = temp == null ? getColor(R.color.note_background) : temp.getColor();
 
         ExtendedFloatingActionButton enc = findViewById(R.id.enc);
         enc.setOnClickListener(v -> encriptar());

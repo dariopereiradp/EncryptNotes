@@ -35,15 +35,15 @@ import dp.cryptd.db.notes.Note;
 import dp.cryptd.db.notes.NotesDB;
 import dp.cryptd.db.notes.NotesDao;
 
-import static dp.cryptd.activities.EditNoteActivity.NOTE_EXTRA_Key;
+import static dp.cryptd.activities.EditNoteActivity.NOTE_EXTRA_KEY;
 
 /**
  * A fragment to show all notes stored on DB and to handle click, long click and swipe to delete.
  * It also implements a search view
  */
-public class DiaryFragment extends Fragment implements NoteEventListener {
+public class NotesFragment extends Fragment implements NoteEventListener {
 
-    public static final String DIARY_FRAGMENT = "diary_fragment";
+    public static final String NOTES_FRAGMENT = "notes_fragment";
     private RecyclerView recyclerView;
     private ArrayList<Note> notes;
     private NotesAdapter adapter;
@@ -62,7 +62,7 @@ public class DiaryFragment extends Fragment implements NoteEventListener {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_diary, container, false);
+        return inflater.inflate(R.layout.fragment_notes, container, false);
     }
 
     @Override
@@ -100,16 +100,24 @@ public class DiaryFragment extends Fragment implements NoteEventListener {
         loadNotes();
     }
 
-    public void closeSearchView() {
+
+    /**
+     * Closes search view if it is open and returns true if it was open or false if not.
+     *
+     * @return
+     */
+    public boolean closeSearchView() {
         if (!searchView.isIconified()) {
             searchView.onActionViewCollapsed();
+            return true;
         }
+        return false;
     }
 
     @Override
     public void onNoteClick(Note note) {
         Intent edit = new Intent(this.getActivity(), EditNoteActivity.class);
-        edit.putExtra(NOTE_EXTRA_Key, note.getId());
+        edit.putExtra(NOTE_EXTRA_KEY, note.getId());
         closeSearchView();
         startActivity(edit);
     }
@@ -233,7 +241,7 @@ public class DiaryFragment extends Fragment implements NoteEventListener {
     private void onDeleteMultiNotes() {
         List<Note> checkedNotes = adapter.getCheckedNotes();
         if (checkedNotes.size() != 0) {
-            new AlertDialog.Builder(DiaryFragment.this.getContext())
+            new AlertDialog.Builder(NotesFragment.this.getContext())
                     .setMessage(getString(R.string.delete) + "?")
                     .setPositiveButton(getString(R.string.delete), (dialogInterface, i) -> {
                         for (Note note : checkedNotes) {
@@ -278,7 +286,7 @@ public class DiaryFragment extends Fragment implements NoteEventListener {
      * Asks for confirmation and delete. If note has notification, delete notification worker.
      */
     private void swipeToDelete(final Note swipedNote, final RecyclerView.ViewHolder viewHolder) {
-        new AlertDialog.Builder(DiaryFragment.this.getContext())
+        new AlertDialog.Builder(NotesFragment.this.getContext())
                 .setMessage(getString(R.string.delete) + "?")
                 .setPositiveButton(getString(R.string.delete), (dialogInterface, i) -> {
                     if (swipedNote.hasNotification()) {
@@ -287,7 +295,7 @@ public class DiaryFragment extends Fragment implements NoteEventListener {
                     dao.deleteNote(swipedNote);
                     notes.remove(swipedNote);
                     loadNotes();
-                    Toast.makeText(DiaryFragment.this.getContext(), getString(R.string.deleteSuccess1), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(NotesFragment.this.getContext(), getString(R.string.deleteSuccess1), Toast.LENGTH_SHORT).show();
 
                 })
                 .setNegativeButton(getString(R.string.cancel), (dialogInterface, i) -> recyclerView.getAdapter().notifyItemChanged(viewHolder.getAdapterPosition()))

@@ -343,9 +343,10 @@
                         </option>
                         <option name="values">
                           <map>
+                            <entry key="assetSourceType" value="FILE" />
                             <entry key="color" value="ffffff" />
-                            <entry key="outputName" value="ic_edit" />
-                            <entry key="sourceFile" value="C:\Users\dp\Downloads\remove_circle-24px.svg" />
+                            <entry key="outputName" value="background" />
+                            <entry key="sourceFile" value="C:\Users\dp\Downloads\cryptd.svg" />
                           </map>
                         </option>
                       </PersistentState>

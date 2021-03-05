@@ -1,23 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#FF039BE5</color>
-    <color name="colorPrimaryDark">#FF2196F3</color>
-    <color name="colorAccent">#FF00BFFF</color>
+    <color name="colorPrimary">#00B326</color>
+    <color name="colorPrimaryDark">#00B323</color>
+    <color name="colorAccent">#00B320</color>
     <color name="colorSecondary">#F1F1F1</color>
 
+    <!-- Google Sign In Fragment -->
     <color name="blue_grey_900">#263238</color>
     <color name="blue_grey_700">#455A64</color>
     <color name="blue_grey_500">#607D8B</color>
 
-    <color name="fabColor">#26C6DA</color>
+    <color name="fabColor">#A4EA00</color>
 
     <color name="grey">#E9EAEE</color>
-    <color name="goodgrey">#535353</color>
+    <color name="goodGrey">#535353</color>
 
     <color name="gradient_1">#00B326</color>
     <color name="gradient_2">#004F6C</color>
 
-    <color name="note_backg">#7EBABABA</color>
+    <color name="note_background">#7EBABABA</color>
     <color name="red">#F91700</color>
 
     <color name="ic_launcher_background">#009639</color>

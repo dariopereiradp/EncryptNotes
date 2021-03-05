@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".fragments.DiaryFragment"
-    tools:showIn="@layout/fragment_diary">
+    tools:context=".fragments.NotesFragment"
+    tools:showIn="@layout/fragment_notes">
 
     <androidx.recyclerview.widget.RecyclerView
         android:visibility="gone"

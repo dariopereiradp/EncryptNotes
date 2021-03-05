@@ -49,9 +49,9 @@ public class BackupHelper {
 
     /**
      * Inicializes all files to backup, that are:
-     * - SharedPreferences: "dp.pfh_preferences.xml"
-     * - Databases: profileDB, prayerDB, notesDB
-     * - Images: you.jpg, she.jpg
+     * - SharedPreferences: "dp.cryptd_preferences.xml"
+     * - Databases: notesDB
+     * - Images: you.jpg
      *
      * @param context
      * @param driveServiceHelper
@@ -65,7 +65,7 @@ public class BackupHelper {
         sharedPrefDB = appFolder + "shared_prefs" + File.separator + "dp.cryptd_preferences.xml";
         backupFolder = appFolder + "backups";
         notesDB = context.getDatabasePath(NotesDB.DATABASE_NAME).toString();
-        profilePicture = context.getFilesDir().getAbsolutePath() + File.separator + MainActivity.PROFILE_PICTURE_NAME_YOU;
+        profilePicture = context.getFilesDir().getAbsolutePath() + File.separator + MainActivity.PROFILE_PICTURE_NAME;
     }
 
     /**
@@ -293,13 +293,13 @@ public class BackupHelper {
         try {
             File zipFile = new File(backupFolder + "/dp.cryptd.backup");
             unzip(zipFile.getAbsolutePath(), backupFolder);
-            File zipDiaryDB = new File(backupFolder + "/" + NotesDB.DATABASE_NAME);
+            File zipNotesDB = new File(backupFolder + "/" + NotesDB.DATABASE_NAME);
             File zipSharedPref = new File(backupFolder + "/" + "dp.pfh_preferences.xml");
             File zipProfileImg = new File(backupFolder + "/" + "you.jpg");
 
-            if (zipDiaryDB.exists()) {
-                Files.copy(zipDiaryDB, new File(notesDB));
-                zipDiaryDB.delete();
+            if (zipNotesDB.exists()) {
+                Files.copy(zipNotesDB, new File(notesDB));
+                zipNotesDB.delete();
             }
             if (zipSharedPref.exists()) {
                 PreferenceManager.getDefaultSharedPreferences(context).edit().clear().commit();

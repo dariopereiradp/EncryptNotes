@@ -37,7 +37,7 @@ import dp.cryptd.backup.GoogleSignInFragment;
 import dp.cryptd.db.notes.Note;
 import dp.cryptd.db.notes.NotesDB;
 import dp.cryptd.fragments.AboutFragment;
-import dp.cryptd.fragments.DiaryFragment;
+import dp.cryptd.fragments.NotesFragment;
 import dp.cryptd.fragments.SettingsFragment;
 import dp.cryptd.notifications.NoteReminderWorker;
 import dp.cryptd.utils.ImageUtils;
@@ -45,23 +45,22 @@ import dp.cryptd.utils.NavDrawerMenuStack;
 
 /**
  * Activity that contains all fragments, creates notification channels, handle results, reload alarms
- * when restore occours, etc... Also: controls the backStack, navigation drawer clicks and own profile
+ * when restore occurs, etc... Also: controls the backStack, navigation drawer clicks and own profile
  * picture.
  */
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    public static final String PROFILE_PICTURE_NAME_YOU = "you.jpg";
+    public static final String PROFILE_PICTURE_NAME = "you.jpg";
+    private static final String HAS_PROFILE_PICTURE = "profile";
     public static final String HAS_LOADED_URL = "url_ok";
-    public static final String FRAGMENT_TO_LOAD = "fragment_to_load";
-    private static final String LAST_DAY_RESET = "reset_date";
-    private static final String HAS_PROFILE_PICTURE_YOU = "profile_you";
-    private static MainActivity INSTANCE;
+
     private SharedPreferences settings;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private MaterialToolbar toolbar;
     private ImageUtils imageUtils;
     private Stack<Integer> menuIndexesClicked;
+    private static MainActivity INSTANCE;
 
     public static MainActivity getInstance() {
         if (INSTANCE == null)
@@ -85,8 +84,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         toggleDrawer();
         setInitialFragment(savedInstanceState);
         PreferenceManager.setDefaultValues(this, R.xml.root_preferences, false);
-        imageUtils = new ImageUtils(this, PROFILE_PICTURE_NAME_YOU, HAS_PROFILE_PICTURE_YOU);
-        setOwnProfileImage();
+        imageUtils = new ImageUtils(this, PROFILE_PICTURE_NAME, HAS_PROFILE_PICTURE);
+        setProfileImage();
         TextView name_view = navigationView.getHeaderView(0).findViewById(R.id.nav_header_name_id);
         TextView mail_view = navigationView.getHeaderView(0).findViewById(R.id.nav_header_email_id);
         String name = settings.getString(PROFILE_NAME, getResources().getString(R.string.your_name));
@@ -111,33 +110,15 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
     /**
-     * Checks if the savedInstanceState is null - onCreate() is ran
-     * If so, display fragment of navigation drawer menu at the initial position and
-     * set checked status as true or set the position to the fragment that has been loaded.
-     *
-     * @param savedInstanceState savedInstanceState
-     */
-    private void setInitialFragment(Bundle savedInstanceState) {
-        Intent intent = getIntent();
-        if (savedInstanceState == null) {
-            navigationView.getMenu().getItem(0).setChecked(true);
-            menuIndexesClicked.push(0);
-            toolbar.setTitle(R.string.app_name);
-            getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_id, new DiaryFragment())
-                    .commit();
-        }
-    }
-
-    /**
      * If profile image doesn't exist, it will check if there is a valid url and if this url has not
      * been loaded. If this is true, then it will load the image from the url.
      * HAS_LOADED_URL will allow the user to delete the image. If this condition doesn't exists,
      * when the user deletes it's picture, the app will automatically load again from the url.
      */
-    private void setOwnProfileImage() {
+    private void setProfileImage() {
         ImageView profileImage = navigationView.getHeaderView(0).findViewById(R.id.profile_picture);
 
-        boolean profileImageIsSet = settings.getBoolean(HAS_PROFILE_PICTURE_YOU, false);
+        boolean profileImageIsSet = settings.getBoolean(HAS_PROFILE_PICTURE, false);
         boolean hasLoadedUrl = settings.getBoolean(HAS_LOADED_URL, false);
 
         if (!imageUtils.existsProfilePicture()) {
@@ -150,7 +131,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         if (imageUtils.existsProfilePicture()) {
             if (!profileImageIsSet) {
                 SharedPreferences.Editor editor = settings.edit();
-                editor.putBoolean(HAS_PROFILE_PICTURE_YOU, true);
+                editor.putBoolean(HAS_PROFILE_PICTURE, true);
                 editor.apply();
             }
         }
@@ -193,20 +174,32 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
     /**
+     * Checks if the savedInstanceState is null - onCreate() is ran
+     * If so, display fragment of navigation drawer menu at the initial position and
+     * set checked status as true.
+     *
+     * @param savedInstanceState savedInstanceState
+     */
+    private void setInitialFragment(Bundle savedInstanceState) {
+        if (savedInstanceState == null) {
+            navigationView.getMenu().getItem(0).setChecked(true);
+            menuIndexesClicked.push(0);
+            toolbar.setTitle(R.string.app_name);
+            getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_id, new NotesFragment(), NotesFragment.NOTES_FRAGMENT)
+                    .commit();
+        }
+    }
+
+    /**
      * This method handles different things.
      * 1. If the drawer is open, it will close the drawer.
-     * 2. Else, it will change the fragment to the fragment before or close the app if there is none
+     * 2. If SearchView is open, it will close search view.
+     * 3. Else, it will change the fragment to the fragment before or close the app if there is none
      * fragment opened before.
-     * 3. It will check the right position of the navigation menu and uncheck all the other positions.
      * 4. It will change the name of the toolbar accordingly to the current fragment.
-     * <p>
-     * The uncheck was really problematic. It will need two for loops to uncheck the first and the
-     * second part of the menu (because Android consider that the second menu is a item (submenu) of
-     * the first menu. It is very confuse). Also, this is necessary instead of the automatic uncheck
-     * because I use two different sections (because of the categories) in the menu, but the behaviour
-     * must be consistent, that is, if a check an item of the second section, I need to uncheck the
-     * previous one, even if it is in the first section. The automatic behaviour didn't work as
-     * expected, so I needed to create this.
+     * 5. Call a method to uncheck navigation icons
+     *
+     * @see #uncheckNavigationItems
      * <p>
      * FrameLayout.removeAllViews() - I needed to include that because in some cases the views of
      * different fragments were overlapping causing a weird effect.
@@ -220,9 +213,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         //Checks if the navigation drawer is open -- If so, close it
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
-        }
-        // If drawer is already close -- Do not override original functionality
-        else {
+        } else if (!closeSearchView()) {
             FrameLayout frameLayout = findViewById(R.id.framelayout_id);
             frameLayout.removeAllViews();
             super.onBackPressed();
@@ -243,20 +234,52 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                         toolbar.setTitle(R.string.about_fragment);
                         break;
                 }
-                int size = navigationView.getMenu().size();
-                for (int i = 0; i < size; i++) {
-                    navigationView.getMenu().getItem(i).setChecked(false);
-                }
-                size = navigationView.getMenu().getItem(1).getSubMenu().size();
-                for (int i = 0; i < size; i++) {
-                    navigationView.getMenu().getItem(1).getSubMenu().getItem(i).setChecked(false);
-                }
-                if (index == 0)
-                    navigationView.getMenu().getItem(index).setChecked(true);
-                else {
-                    navigationView.getMenu().getItem(1).getSubMenu().getItem(index - 1).setChecked(true);
-                }
+                uncheckNavigationItems(index);
             }
+        }
+    }
+
+    /**
+     * This method checks if search view was open or not. If it's open, back button needs to close it.
+     * If it's not open, it will return false and back button will do normal behaviour.
+     *
+     * @return true if search view was closed or false if not
+     */
+    private boolean closeSearchView() {
+        boolean close = false;
+        if (menuIndexesClicked.peek() == 0) {
+            NotesFragment notesFragment = (NotesFragment) getSupportFragmentManager().findFragmentByTag(NotesFragment.NOTES_FRAGMENT);
+            if (notesFragment != null)
+                close = notesFragment.closeSearchView();
+        }
+        return close;
+    }
+
+    /**
+     * This method will check the right position of the navigation menu and uncheck all the other positions.
+     * The uncheck was really problematic. It will need two for loops to uncheck the first and the
+     * second part of the menu (because Android consider that the second menu is a item (submenu) of
+     * the first menu. It is very confuse). Also, this is necessary instead of the automatic uncheck
+     * because I use two different sections (because of the categories) in the menu, but the behaviour
+     * must be consistent, that is, if a check an item of the second section, I need to uncheck the
+     * previous one, even if it is in the first section. The automatic behaviour didn't work as
+     * expected, so I needed to create this.
+     *
+     * @param index - index that will be checked
+     */
+    private void uncheckNavigationItems(int index) {
+        int size = navigationView.getMenu().size();
+        for (int i = 0; i < size; i++) {
+            navigationView.getMenu().getItem(i).setChecked(false);
+        }
+        int sizeSub = navigationView.getMenu().getItem(size - 1).getSubMenu().size();
+        for (int i = 0; i < sizeSub; i++) {
+            navigationView.getMenu().getItem(size - 1).getSubMenu().getItem(i).setChecked(false);
+        }
+        if (index < size - 1)
+            navigationView.getMenu().getItem(index).setChecked(true);
+        else {
+            navigationView.getMenu().getItem(size - 1).getSubMenu().getItem(index - size + 1).setChecked(true);
         }
     }
 
@@ -264,44 +287,49 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
      * 1. Checks if it can change to next fragment (that is, if backStack is empty or if the current
      * fragment is not the same that was clicked)
      * 2. If the condition is true, changes the fragment, add it do backStack and manually adds to
-     * the stack of indexes. Also, changes the toolbar title.
+     * the stack of indexes. Also, changes the toolbar title and call a method to uncheck navigation icons.
      * 3. Closes navigation drawer.
      *
      * @param menuItem
      * @return
+     * @see #uncheckNavigationItems
      */
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         int itemId = menuItem.getItemId();
-        if (itemId == R.id.nav_diary_id) {
-            if (menuIndexesClicked.isEmpty() || menuIndexesClicked.peek() != 1) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_id, new DiaryFragment(), DiaryFragment.DIARY_FRAGMENT).addToBackStack(null)
+        if (itemId == R.id.nav_notes_id) {
+            if (menuIndexesClicked.isEmpty() || menuIndexesClicked.peek() != 0) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_id, new NotesFragment(), NotesFragment.NOTES_FRAGMENT).addToBackStack(null)
                         .commit();
                 menuIndexesClicked.push(0);
+                uncheckNavigationItems(0);
                 toolbar.setTitle(R.string.app_name);
             }
             closeDrawer();
         } else if (itemId == R.id.nav_settings_id) {
-            if (menuIndexesClicked.isEmpty() || menuIndexesClicked.peek() != 3) {
+            if (menuIndexesClicked.isEmpty() || menuIndexesClicked.peek() != 1) {
                 getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_id, new SettingsFragment()).addToBackStack(null)
                         .commit();
                 menuIndexesClicked.push(1);
+                uncheckNavigationItems(1);
                 toolbar.setTitle(R.string.settings);
             }
             closeDrawer();
         } else if (itemId == R.id.nav_google_id) {
-            if (menuIndexesClicked.isEmpty() || menuIndexesClicked.peek() != 4) {
+            if (menuIndexesClicked.isEmpty() || menuIndexesClicked.peek() != 2) {
                 getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_id, new GoogleSignInFragment(), "google").addToBackStack(null)
                         .commit();
                 menuIndexesClicked.push(2);
+                uncheckNavigationItems(2);
                 toolbar.setTitle(R.string.google_login);
             }
             closeDrawer();
         } else if (itemId == R.id.nav_about_id) {
-            if (menuIndexesClicked.isEmpty() || menuIndexesClicked.peek() != 5) {
+            if (menuIndexesClicked.isEmpty() || menuIndexesClicked.peek() != 3) {
                 getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_id, new AboutFragment()).addToBackStack(null)
                         .commit();
                 menuIndexesClicked.push(3);
+                uncheckNavigationItems(3);
                 toolbar.setTitle(R.string.about_fragment);
             }
             closeDrawer();
@@ -321,7 +349,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     /**
      * This is used in case the user is trying to do a backup or restore and needs to give the
      * required permission first.
-     * If it's the request is not related to backup and restore, that means is a image related request.
+     * If the request is not related to backup and restore, that means is a image related request.
      * The method will call onActivityResult from ImageUtils to handle it.
      *
      * @param requestCode
@@ -349,7 +377,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
      * This method will set all the alarms again. This is useful when restoring a backup.
      * 1. Iterate through all notes and if note has notification, creates a new alarm for that note.
      * 2. Set LOAD_ALARMS to false, indicating that the restore is finished.
-     *
      */
     private void reloadAlarms() {
 
@@ -373,12 +400,12 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private void createNotificationChannel() {
         int importance = NotificationManager.IMPORTANCE_HIGH;
 
-        CharSequence diary_name = getString(R.string.diary_channel_name);
+        CharSequence notes_name = getString(R.string.diary_channel_name);
         String diary_description = getString(R.string.diary_channel_description);
-        NotificationChannel diary_channel = new NotificationChannel(NoteReminderWorker.CHANNEL_ID, diary_name, importance);
-        diary_channel.setDescription(diary_description);
+        NotificationChannel notes_channel = new NotificationChannel(NoteReminderWorker.CHANNEL_ID, notes_name, importance);
+        notes_channel.setDescription(diary_description);
 
         NotificationManager notificationManager = getSystemService(NotificationManager.class);
-        notificationManager.createNotificationChannel(diary_channel);
+        notificationManager.createNotificationChannel(notes_channel);
     }
 }

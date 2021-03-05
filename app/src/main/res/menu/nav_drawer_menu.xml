@@ -4,9 +4,9 @@
     tools:showIn="navigation_view">
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_diary_id"
+            android:id="@+id/nav_notes_id"
             android:icon="@drawable/ic_note_black_24dp"
-            android:title="@string/diary" />
+            android:title="@string/notes" />
 
         <item android:title="@string/others">
             <menu>

@@ -69,7 +69,7 @@
         android:layout_gravity="bottom|start"
         android:layout_margin="@dimen/fab_margin"
         android:text="@string/encriptar"
-        app:backgroundTint="@color/colorPrimary"
+        app:backgroundTint="@color/fabColor"
         app:icon="@drawable/ic_enc_black_24dp"
         app:iconTint="@color/red" />
 
@@ -80,7 +80,7 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         android:text="@string/desencriptar"
-        app:backgroundTint="@color/colorPrimary"
+        app:backgroundTint="@color/fabColor"
         app:icon="@drawable/ic_desc_black_24dp"
         app:iconTint="#02BB04" />
 
