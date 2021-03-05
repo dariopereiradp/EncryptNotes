@@ -35,5 +35,5 @@ Old version link: https://github.com/dariopereiradp/CriptografiaD_Android/
 This project is archived and it won't be updated anymore. Version 1.4.1 was the last version.
 For now on, the project will be continued in EncryptNotes app (Cryptography D++ 2.0)
 
-[v1.0]:
+[v2.0]: https://github.com/dariopereiradp/EncryptNotes/releases/tag/v2.0
 [v1.4.1]: https://github.com/dariopereiradp/CriptografiaD_Android/releases/tag/v.1.4.1
